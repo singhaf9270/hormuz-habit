@@ -1,254 +1,336 @@
-<div align="center">
+# HormuzHabit
 
-# 🏆 HormuzHabit
+**A bilingual habit-tracking plugin for Obsidian, built around daily notes, streaks, and milestone rewards.**
 
-**Habit tracker for Obsidian — Persian/English · Jalali/Gregorian · golden-cup celebrations**
+**پیگیری عادت‌ها در Obsidian؛ از ثبت روزانه تا زنجیره‌های پیوسته و پاداش‌های قابل شخصی‌سازی.**
 
-**ردیاب عادت برای Obsidian — دوزبانه · تقویم شمسی/میلادی · جشن کاپ طلایی**
+<p align="center">
+  <a href="https://github.com/singhaf9270/hormuz-habit/releases">
+    <img src="https://img.shields.io/badge/version-1.0.0-7C3AED?style=flat-square" alt="Version 1.0.0">
+  </a>
+  <img src="https://img.shields.io/badge/Obsidian-%3E%3D1.5.0-7C3AED?style=flat-square&logo=obsidian" alt="Obsidian 1.5.0 or later">
+  <img src="https://img.shields.io/badge/license-MIT-16A34A?style=flat-square" alt="MIT License">
+</p>
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blueviolet?style=for-the-badge)](https://github.com/singhaf9270/hormuz-habit/releases)
-[![Obsidian](https://img.shields.io/badge/Obsidian-%3E%3D1.5.0-7c3aed?style=for-the-badge&logo=obsidian)](https://obsidian.md)
-[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
-[![Bale](https://img.shields.io/badge/Bale-@obsidiantut-22A06B?style=for-the-badge)](https://ble.ir/obsidiantut)
-[![Telegram](https://img.shields.io/badge/Telegram-@obsidiantut-229ED9?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/obsidiantut)
-[![YouTube](https://img.shields.io/badge/YouTube-@obsidiantut-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@obsidiantut)
-
-[فارسی](#-فارسی) · [English](#-english) · [نصب سریع](#-نصب) · [Quick install](#-installation)
-
-</div>
-
----
-
-## 📸 Screenshots · تصاویر
-
-> اگر تصویری داری، در پوشهٔ `docs/` بذار و این‌جا لینک بده. مثلاً:
->
-> | Widget · ویجت | Dashboard · داشبورد | Golden cup · کاپ طلایی |
-> |:---:|:---:|:---:|
-> | ![widget](docs/widget.png) | ![dashboard](docs/dashboard.png) | ![golden](docs/golden.png) |
+<p align="center">
+  <a href="#فارسی">فارسی</a> ·
+  <a href="#english">English</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#usage">Usage</a>
+</p>
 
 ---
 
-## 🇮🇷 فارسی
+## فارسی
 
-### ✨ معرفی
+### پیگیری عادت‌ها، در بستر یادداشت‌های روزانه
 
-**HormuzHabit** یک پلاگین پیگیری عادت برای **Obsidian** است که برای استفادهٔ فارسی و انگلیسی طراحی شده. عادت‌های روزانه‌ات رو از داخل یادداشت‌های روزانه دنبال کن، زنجیره بساز و با رسیدن به حد نصاب، **کاپ طلایی** بگیر. 🏆
+**HormuzHabit** یک افزونهٔ پیگیری عادت برای [Obsidian](https://obsidian.md) است که ثبت عادت‌ها را به یادداشت‌های روزانهٔ خودت متصل می‌کند.
 
-### 🎯 امکانات نسخهٔ ۱.۰.۰
+عادت‌ها را تعریف کن، پیشرفت روزانه را ثبت کن، زنجیره‌های پیوسته‌ات را دنبال کن و برای رسیدن به نقاط عطف، کاپ طلایی بگیر. اطلاعات عادت‌ها در Frontmatter یادداشت‌های روزانه ذخیره می‌شوند و داشبورد افزونه، نمایی یکپارچه از سابقه و پیشرفت آن‌ها ارائه می‌دهد.
 
-| ویژگی | توضیح |
-|:---|:---|
-| 🌐 **دوزبانه** | رابط کاربری فارسی و انگلیسی |
-| 📅 **تقویم شمسی و میلادی** | نمایش تاریخ‌ها با هر دو تقویم |
-| 🔢 **اعداد فارسی** | نمایش اعداد با ارقام فارسی (قابل خاموش کردن) |
-| 🔥 **زنجیره (Streak)** | شمارش روزهای پیوسته و رکورد شخصی |
-| 🏅 **سیستم کاپ** | هر `N` روز پیوسته یک کاپ جدید (قابل تنظیم برای هر عادت) |
-| 🏆 **جشن طلایی** | افکت کانفتی و توست هنگام رسیدن به کاپ جدید |
-| 📊 **نوار پیشرفت هوشمند** | چهار حالت: خالی، خوابیده (خاکستری)، رنگی و کامل (فیروزه‌ای) |
-| 🧩 **سه نوع ویجت** | `habit-tracker` (کامل)، `habit` (ساده)، `habit-compact` (فشرده) |
-| 📝 **ثبت خودکار** | با کلیک روی دکمه، فیلد عادت در Frontmatter یادداشت روزانه `true` می‌شود |
-| 🗓️ **داشبورد اختصاصی** | نمای کناری با تقویم ماهانه و آمار کامل هر عادت |
-| 🎨 **تم روشن و تاریک** | طراحی هماهنگ با هر دو تم Obsidian |
-| 📂 **پیشنهاد خودکار مسیر** | هنگام تایپ مسیر پوشه/فایل، پیشنهاد می‌دهد |
-| 👁️ **پیش‌نمایش فایل‌ها** | در تنظیمات، فایل‌های Markdown پوشه قابل مشاهده و بازکردن هستند |
+رابط فارسی و انگلیسی، پشتیبانی از تقویم شمسی و میلادی و امکان تنظیم پاداش برای هر عادت، این افزونه را برای گردش کارهای متفاوت قابل استفاده می‌کند.
 
-### 📦 نصب
+### قابلیت‌ها
 
-#### روش ۱: نصب دستی
-1. پوشه‌ای با نام `hormuz-habit` در مسیر زیر بساز:
+| قابلیت | توضیحات |
+|---|---|
+| **رابط دوزبانه** | انتخاب زبان فارسی یا انگلیسی از تنظیمات |
+| **تقویم دوگانه** | نمایش تاریخ‌ها به شمسی یا میلادی |
+| **ارقام فارسی** | نمایش اعداد با ارقام فارسی، با امکان غیرفعال‌سازی |
+| **زنجیرهٔ عادت‌ها** | محاسبهٔ روزهای پیوسته و بهترین رکورد هر عادت |
+| **پاداش‌های قابل تنظیم** | تعیین تعداد روزهای لازم برای دریافت هر کاپ، به‌صورت مستقل برای هر عادت |
+| **جشن رسیدن به هدف** | نمایش کانفتی و اعلان هنگام دریافت کاپ جدید |
+| **نوار پیشرفت چندحالته** | نمایش وضعیت عادت از شروع ثبت تا رسیدن به نقطهٔ عطف |
+| **سه نوع ویجت** | نمایش کامل، ساده یا فشردهٔ عادت‌ها در یادداشت‌ها |
+| **ثبت مستقیم در Frontmatter** | ثبت عادت با کلیک روی دکمه، بدون نیاز به ویرایش دستی فیلد |
+| **داشبورد اختصاصی** | مشاهدهٔ تقویم ماهانه و آمار عادت‌ها در پنل کناری |
+| **هماهنگی با تم Obsidian** | پشتیبانی ظاهری از تم‌های روشن و تاریک |
+| **پیشنهاد مسیر** | پیشنهاد مسیر پوشه‌ها و فایل‌ها هنگام تنظیم مسیر |
+| **پیش‌نمایش فایل‌ها** | مشاهده و بازکردن فایل‌های Markdown از بخش تنظیمات |
+
+### نصب
+
+#### روش اول: نصب دستی
+
+۱. در پوشهٔ افزونه‌های Vault خود، پوشه‌ای با نام `hormuz-habit` بساز:
+
+```text
 <Vault>/.obsidian/plugins/hormuz-habit/
+```
 
-text
-2. سه فایل زیر را داخل آن قرار بده:
+۲. سه فایل زیر را داخل آن قرار بده:
+
 - `main.js`
 - `manifest.json`
 - `styles.css`
-3. Obsidian را باز کن و در **Settings → Community plugins** پلاگین **HormuzHabit** را فعال کن.
 
-#### روش ۲: از طریق BRAT
-1. پلاگین [BRAT](https://github.com/TfTHacker/obsidian42-brat) را نصب کن.
-2. در BRAT این آدرس را وارد کن:
+۳. در Obsidian به مسیر زیر برو:
+
+`Settings → Community plugins`
+
+۴. افزونهٔ **HormuzHabit** را فعال کن. اگر در فهرست ظاهر نشد، فهرست افزونه‌ها را بازخوانی کن یا Obsidian را دوباره اجرا کن.
+
+#### روش دوم: نصب با BRAT
+
+۱. افزونهٔ [BRAT](https://github.com/TfTHacker/obsidian42-brat) را نصب و فعال کن.
+
+۲. در تنظیمات BRAT، مخزن زیر را اضافه کن:
+
+```text
 singhaf9270/hormuz-habit
+```
 
-text
+۳. پس از نصب، HormuzHabit را از بخش Community plugins فعال کن.
 
-### 🚀 استفاده از ویجت
+### استفاده از ویجت‌ها
 
-برای نمایش **همهٔ عادت‌ها**:
+ویجت‌ها را می‌توان در هر یادداشتی که Obsidian برای افزونه‌های مربوطه پردازش می‌کند، قرار داد.
 
-~~~markdown
+**نمایش همهٔ عادت‌ها**
+
+````markdown
 ```habit-tracker
-text
+```
+````
 
-برای نمایش **یک عادت مشخص** (نام نمایشی یا نام فیلد Frontmatter):
+**نمایش یک عادت مشخص**
 
-~~~markdown
+نام نمایشی یا نام فیلد Frontmatter عادت را وارد کن:
+
+````markdown
 ```habit
 مطالعه
 ```
-نسخهٔ فشرده:
+````
 
-markdown
+**نمایش فشردهٔ یک عادت**
+
+````markdown
 ```habit-compact
 مطالعه
 ```
-🗓️ ساختار یادداشت روزانه
-پلاگین یادداشت‌های روزانه را با نام فایل تاریخ میلادی ISO (YYYY-MM-DD.md) و فیلد day در Frontmatter شناسایی می‌کند:
+````
 
-yaml
+برای مثال، اگر عادت «مطالعه» در تنظیمات تعریف شده باشد، می‌توانی ویجت ساده یا فشردهٔ آن را در یادداشت موردنظر قرار بدهی.
+
+### ساختار یادداشت‌های روزانه
+
+HormuzHabit یادداشت‌های روزانه را بر اساس نام فایل با تاریخ میلادی ISO شناسایی می‌کند:
+
+```text
+YYYY-MM-DD.md
+```
+
+نمونهٔ Frontmatter:
+
+```yaml
 ---
 day: 2025-01-15
 مطالعه: true
 ورزش: false
 ---
-💡 نام فیلد (مطالعه) همان چیزی است که در تنظیمات هر عادت وارد می‌کنی.
+```
 
-📅 نکته: تقویم فقط شیوهٔ نمایش را تغییر می‌دهد. شناسایی یادداشت‌ها همیشه با تاریخ میلادی ISO انجام می‌شود.
+- `day` تاریخ روز را مشخص می‌کند.
+- نام هر فیلد عادت باید با فیلد تعریف‌شده در تنظیمات افزونه مطابقت داشته باشد.
+- مقدار `true` نشان‌دهندهٔ ثبت عادت و `false` نشان‌دهندهٔ ثبت‌نشدن آن است.
 
-⚙️ تنظیمات
-تنظیم	توضیح
-زبان رابط	فارسی یا انگلیسی
-نوع تقویم	شمسی یا میلادی (فقط نمایش)
-اعداد فارسی	نمایش اعداد با ارقام فارسی
-پوشه روزنگار	پوشه‌ای که یادداشت‌های عادت جست‌وجو می‌شوند
-پوشه یادداشت روزانه	محل ساخت یادداشت امروز
-قالب یادداشت	قالب اختیاری برای ساخت یادداشت جدید
-عادت‌ها	نام، فیلد Frontmatter، ایموجی‌ها، حد نصاب جایزه
-🎨 حالت‌های نوار پیشرفت
-حالت	رنگ	معنی
-خالی	بدون رنگ	هنوز هیچ روزی ثبت نشده
-خوابیده	خاکستری	زنجیره قبلی هست ولی امروز ثبت نشده
-رنگی	بنفش	امروز ثبت شده و در حال پیشرفت
-کامل	فیروزه‌ای	به کاپ رسیدی! 🎉
-🇬🇧 English
-✨ Overview
-HormuzHabit is a habit-tracking plugin for Obsidian built for both Persian and English workflows. Track your daily habits from within your journal notes, build streaks, and earn a golden trophy when you hit your milestone. 🏆
+**نکتهٔ مهم دربارهٔ تقویم:** تقویم شمسی یا میلادی فقط شیوهٔ نمایش تاریخ‌ها را تغییر می‌دهد. شناسایی فایل‌های روزانه همچنان بر اساس تاریخ میلادی ISO انجام می‌شود.
 
-🎯 Features (v1.0.0)
-Feature	Description
-🌐 Bilingual	Persian and English interface
-📅 Jalali & Gregorian	Display dates in either calendar
-🔢 Persian digits	Display numbers with Persian numerals (toggleable)
-🔥 Streaks	Track consecutive days and personal bests
-🏅 Trophy system	A new trophy every N consecutive days (configurable per habit)
-🏆 Golden celebration	Confetti and toast when you reach a new trophy
-📊 Smart progress bar	Four states: empty, dormant (grey), colored, complete (teal)
-🧩 Three widget types	habit-tracker (full), habit (simple), habit-compact (compact)
-📝 Auto logging	Click the button and the habit field becomes true in the daily note's frontmatter
-🗓️ Dedicated dashboard	Side panel with monthly calendar and full stats per habit
-🎨 Light & dark	Styled for both Obsidian themes
-📂 Path autocomplete	Suggests folders/files while typing
-👁️ File previews	Preview and open Markdown files from settings
-📦 Installation
-Method 1: Manual
-Create a folder named hormuz-habit at:
+### تنظیمات
 
-text
+| تنظیم | کاربرد |
+|---|---|
+| زبان رابط | انتخاب فارسی یا انگلیسی |
+| نوع تقویم | نمایش تاریخ به شمسی یا میلادی |
+| ارقام فارسی | فعال یا غیرفعال‌کردن ارقام فارسی |
+| پوشهٔ روزنگار | تعیین پوشه‌ای که سوابق عادت‌ها از آن خوانده می‌شوند |
+| پوشهٔ یادداشت روزانه | تعیین محل ایجاد یادداشت امروز |
+| قالب یادداشت | استفاده از قالب اختیاری هنگام ساخت یادداشت جدید |
+| تنظیم عادت‌ها | تعریف نام، فیلد Frontmatter، ایموجی و حد نصاب کاپ برای هر عادت |
+
+### وضعیت‌های نوار پیشرفت
+
+| وضعیت | رنگ | مفهوم |
+|---|---|---|
+| خالی | بدون رنگ | هنوز سابقه‌ای برای عادت ثبت نشده است |
+| غیرفعال | خاکستری | زنجیرهٔ قبلی وجود دارد، اما عادت امروز ثبت نشده است |
+| در حال پیشرفت | بنفش | عادت امروز ثبت شده و پیشرفت ادامه دارد |
+| تکمیل‌شده | فیروزه‌ای | نقطهٔ عطف کاپ محقق شده است |
+
+---
+
+## English
+
+### Habit tracking that lives in your daily notes
+
+**HormuzHabit** is a habit-tracking plugin for [Obsidian](https://obsidian.md) that connects daily habit logging with your existing notes.
+
+Define your habits, record daily progress, build consecutive-day streaks, and celebrate milestones with golden trophies. Habit entries are stored in daily-note frontmatter, while a dedicated dashboard brings your history and progress together.
+
+With Persian and English interfaces, Jalali and Gregorian calendar displays, and per-habit trophy thresholds, HormuzHabit supports different languages and workflows without requiring a separate note for every habit.
+
+### Features
+
+| Feature | Description |
+|---|---|
+| **Bilingual interface** | Switch between Persian and English |
+| **Dual calendar support** | Display dates using the Jalali or Gregorian calendar |
+| **Persian numerals** | Toggle Persian digit formatting |
+| **Streak tracking** | Track consecutive days and personal records |
+| **Configurable milestones** | Set a trophy threshold independently for each habit |
+| **Milestone celebrations** | Confetti and a notification when a new trophy is earned |
+| **Multi-state progress bar** | Visualize progress from an empty state to a completed milestone |
+| **Three widget types** | Full, simple, and compact habit views |
+| **Frontmatter logging** | Update a habit field directly from its widget |
+| **Dedicated dashboard** | Explore a monthly calendar and habit statistics in a side panel |
+| **Theme compatibility** | Styling for Obsidian's light and dark themes |
+| **Path suggestions** | Get folder and file suggestions while configuring paths |
+| **File previews** | Browse and open Markdown files from settings |
+
+### Installation
+
+#### Option 1: Manual installation
+
+1. Create a folder named `hormuz-habit` inside your vault's plugin directory:
+
+```text
 <Vault>/.obsidian/plugins/hormuz-habit/
-Place these files inside it:
+```
 
-main.js
+2. Place these three files inside the folder:
 
-manifest.json
+- `main.js`
+- `manifest.json`
+- `styles.css`
 
-styles.css
+3. Open Obsidian and navigate to:
 
-Open Obsidian and enable HormuzHabit in Settings → Community plugins.
+`Settings → Community plugins`
 
-Method 2: Via BRAT
-Install the BRAT plugin.
+4. Enable **HormuzHabit**. If it does not appear in the list, refresh the plugin list or restart Obsidian.
 
-Add this repository in BRAT:
+#### Option 2: Install with BRAT
 
-text
+1. Install and enable [BRAT](https://github.com/TfTHacker/obsidian42-brat).
+
+2. Add the following repository in BRAT:
+
+```text
 singhaf9270/hormuz-habit
-🚀 Widget usage
-All habits:
+```
 
-markdown
+3. Enable HormuzHabit under Community plugins.
+
+### Usage
+
+Add one of the following code blocks to a Markdown note.
+
+**Display all habits**
+
+````markdown
 ```habit-tracker
 ```
-A specific habit (display name or frontmatter field):
+````
 
-markdown
+**Display a specific habit**
+
+Use its display name or frontmatter field:
+
+````markdown
 ```habit
 Reading
 ```
-Compact version:
+````
 
-markdown
+**Display a compact habit widget**
+
+````markdown
 ```habit-compact
 Reading
 ```
-🗓️ Daily note structure
-The plugin identifies daily notes by their ISO Gregorian filename (YYYY-MM-DD.md) and reads the day frontmatter field:
+````
 
-yaml
+### Daily note structure
+
+HormuzHabit identifies daily notes by their Gregorian ISO filename:
+
+```text
+YYYY-MM-DD.md
+```
+
+Example frontmatter:
+
+```yaml
 ---
 day: 2025-01-15
 Reading: true
 Exercise: false
 ---
-💡 The field name (Reading) is exactly what you enter in each habit's settings.
+```
 
-📅 Note: The calendar setting only changes display. Daily notes are always identified by ISO Gregorian dates.
+- `day` identifies the date associated with the note.
+- Habit field names must match the fields configured in the plugin settings.
+- `true` indicates a logged habit; `false` indicates that it has not been logged.
 
-⚙️ Settings
-Setting	Description
-Interface language	Persian or English
-Calendar system	Jalali or Gregorian (display only)
-Persian digits	Show numbers with Persian numerals
-Journal folder	Folder scanned for habit entries
-Daily note folder	Where today's note is created
-Daily note template	Optional template for new notes
-Habits	Name, frontmatter field, emojis, trophy threshold
-🎨 Progress bar states
-State	Color	Meaning
-Empty	None	No days logged yet
-Dormant	Grey	Previous streak exists but today isn't logged
-Colored	Purple	Today logged, progress ongoing
-Complete	Teal	Trophy reached! 🎉
-📣 همراه ما باشید · Stay connected
-آموزش‌ها، تازه‌ها و نکته‌های کاربردی Obsidian را در کانال‌های ما دنبال کنید.
-Follow us for Obsidian tutorials, updates, and practical tips.
+**Calendar note:** The calendar setting changes date presentation only. Daily notes are always identified using Gregorian ISO dates.
 
-<div align="center">
-📢 بله · Bale	✈️ تلگرام · Telegram	▶️ یوتیوب · YouTube
-https://img.shields.io/badge/Bale-@obsidiantut-22A06B?style=for-the-badge	https://img.shields.io/badge/Telegram-@obsidiantut-229ED9?style=for-the-badge&logo=telegram&logoColor=white	https://img.shields.io/badge/YouTube-@obsidiantut-FF0000?style=for-the-badge&logo=youtube&logoColor=white
-ble.ir/obsidiantut	t.me/obsidiantut	youtube.com/@obsidiantut
-</div>
-❤️ حمایت مالی · Support
-اگر این افزونه برایتان مفید بوده، می‌توانید از ادامهٔ توسعهٔ آن حمایت کنید.
-If this plugin helps you, consider supporting its continued development.
+### Settings
 
-<div align="center">
-https://img.shields.io/badge/%D8%AD%D9%85%D8%A7%DB%8C%D8%AA%20%D9%85%D8%A7%D9%84%DB%8C-Reymit-8b5cf6?style=for-the-badge
+| Setting | Description |
+|---|---|
+| Interface language | Choose Persian or English |
+| Calendar system | Display dates in Jalali or Gregorian format |
+| Persian digits | Enable or disable Persian numeral formatting |
+| Journal folder | Select the folder scanned for habit history |
+| Daily note folder | Choose where today's note is created |
+| Daily note template | Optionally use a template when creating a new note |
+| Habit configuration | Set each habit's name, frontmatter field, emoji, and trophy threshold |
 
-reymit.ir/singhaf9270
+### Progress bar states
 
-</div>
-🤝 مشارکت · Contributing
-از مشارکت، گزارش باگ و پیشنهاد ویژگی‌ها استقبال می‌شود!
-Contributions, bug reports, and feature suggestions are welcome!
+| State | Color | Meaning |
+|---|---|---|
+| Empty | None | No habit history has been recorded |
+| Dormant | Grey | A previous streak exists, but today's habit has not been logged |
+| In progress | Purple | Today's habit is logged and progress continues |
+| Complete | Teal | The trophy milestone has been reached |
 
-🐛 گزارش باگ · Bug report
+---
 
-💡 پیشنهاد ویژگی · Feature request
+## Project links
 
-🔀 Pull Request
+- **Repository:** [singhaf9270/hormuz-habit](https://github.com/singhaf9270/hormuz-habit)
+- **Releases:** [View releases](https://github.com/singhaf9270/hormuz-habit/releases)
+- **License:** [MIT](LICENSE)
+- **Report a bug:** [Open an issue](https://github.com/singhaf9270/hormuz-habit/issues/new)
+- **Request a feature:** [Open an issue](https://github.com/singhaf9270/hormuz-habit/issues/new)
 
-📄 مجوز · License
-این پروژه تحت مجوز MIT منتشر شده است.
-This project is released under the MIT License.
+## Follow the Obsidian tutorials
 
-LICENSE
+Persian-language tutorials, practical workflows, and plugin updates.
 
-<div align="center">
-ساخته شده با ❤️ برای جامعهٔ Obsidian
-Made with ❤️ for the Obsidian community
+- [Bale](https://ble.ir/obsidiantut)
+- [Telegram](https://t.me/obsidiantut)
+- [YouTube](https://youtube.com/@obsidiantut)
 
-https://img.shields.io/github/stars/singhaf9270/hormuz-habit?style=social
-https://img.shields.io/github/forks/singhaf9270/hormuz-habit?style=social
+## Support development
 
-</div> ```
+If HormuzHabit is useful in your workflow, you can support its continued development.
+
+[Support via Reymit](https://reymit.ir/singhaf9270)
+
+## Contributing
+
+Bug reports, feature requests, and pull requests are welcome. Please use the repository's issue tracker to describe a problem or propose an improvement.
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+<p align="center">
+  Made with care for the Obsidian community.
+  <br>
+  ساخته‌شده برای تجربه‌ای منظم‌تر در Obsidian
+</p>
