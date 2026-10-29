@@ -742,12 +742,14 @@ class HabitTrackerPlugin extends Plugin {
     // ---------------------------------------------------------
 
     this.registerMarkdownCodeBlockProcessor("habit-tracker", (source, el, ctx) => {
+      el.closest("pre")?.classList.add("habit-widget-code-block");
       const child = new HabitTrackerRenderChild(this.app, this, el, source);
       ctx.addChild(child);
       child.render();
     });
 
     this.registerMarkdownCodeBlockProcessor("habit", (source, el, ctx) => {
+      el.closest("pre")?.classList.add("habit-widget-code-block");
       const name = (source || "").trim();
       const child = new HabitTrackerRenderChild(this.app, this, el, name);
       ctx.addChild(child);
@@ -755,6 +757,7 @@ class HabitTrackerPlugin extends Plugin {
     });
 
     this.registerMarkdownCodeBlockProcessor("habit-compact", (source, el, ctx) => {
+      el.closest("pre")?.classList.add("habit-widget-code-block");
       const name = (source || "").trim();
       const child = new HabitTrackerRenderChild(this.app, this, el, "compact\n" + name);
       ctx.addChild(child);

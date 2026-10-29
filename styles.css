@@ -617,8 +617,7 @@
 }
 
 /* ============ Code Block Widgets ============ */
-.markdown-rendered pre:has(> code.language-habit),
-.markdown-rendered pre:has(> code.language-habit-compact) {
+.markdown-rendered pre.habit-widget-code-block {
   background: transparent !important;
   padding: 0 !important;
   border: none !important;
