@@ -341,13 +341,13 @@ function renderCupProgress(parent, stats, threshold, habit, ph) {
   let isGolden = false;
 
   if (mode === "empty") {
-    remainingText = ph.fa(safeThreshold) + " " + ph.text("روز تا ", "days to ") + habit.cupEmoji + " " + ph.text("کاپ بعدی", "next trophy");
+    remainingText = ph.fa(safeThreshold) + " " + ph.text("روز تا کاپ بعدی", "days to next trophy");
   } else if (mode === "complete") {
     remainingText = ph.text("کاپ جدید آماده شد! 🎉", "New trophy unlocked! 🎉");
     isGolden = true;
   } else if (isTodayDone) {
     const remaining = safeThreshold - effectiveInCycle;
-    remainingText = ph.fa(remaining) + " " + ph.text("روز تا ", "days to ") + habit.cupEmoji + " " + ph.text("کاپ بعدی", "next trophy");
+    remainingText = ph.fa(remaining) + " " + ph.text("روز تا کاپ بعدی", "days to next trophy");
     isGolden = remaining <= 2;
   } else {
     const remainingIfToday = safeThreshold - (effectiveInCycle + 1);
@@ -355,7 +355,7 @@ function renderCupProgress(parent, stats, threshold, habit, ph) {
       remainingText = ph.text("امروز بزنی، چرخه جدید شروع می‌شه!", "Log today to start a new cycle!");
       isGolden = true;
     } else {
-      remainingText = ph.fa(remainingIfToday) + " " + ph.text("روز تا ", "days to ") + habit.cupEmoji + " " + ph.text("کاپ بعدی (امروز بزنی)", "to next trophy (if logged today)");
+      remainingText = ph.fa(remainingIfToday) + " " + ph.text("روز تا کاپ بعدی (با ثبت امروز)", "days to next trophy (if logged today)");
       isGolden = remainingIfToday <= 2;
     }
   }
@@ -477,6 +477,12 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     mk(stats.longestStreak, ph.text("رکورد", "Best"), habit.trophyEmoji);
     mk(stats.totalAccumulatedCups, ph.text("کاپ", "Trophies"), habit.cupEmoji);
 
+    const progressHolder = card.createDiv({ cls: "habit-full-progress" });
+    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
+
+    const progressHolder = card.createDiv({ cls: "habit-compact-progress" });
+    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
+
     const btnWrap = card.createDiv({ cls: "habit-btn-wrap" });
     const isDone = this.plugin.isTodayDone(habit);
     const btn = btnWrap.createEl("button", {
@@ -484,9 +490,6 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
       text: isDone ? ph.text("✓ ثبت شده", "✓ Logged") : ph.text("ثبت", "Log"),
     });
     if (!isDone) this._bindLogButton(btn, habit, ".habit-tracker-card");
-
-    const progressHolder = this.containerEl.createDiv({ cls: "habit-full-progress" });
-    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
   }
 
   renderCompact(habit) {
@@ -518,9 +521,6 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     });
     btn.style.padding = "5px 14px";
     if (!isDone) this._bindLogButton(btn, habit, ".habit-tracker-card");
-
-    const progressHolder = this.containerEl.createDiv({ cls: "habit-compact-progress" });
-    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
   }
 }
 
