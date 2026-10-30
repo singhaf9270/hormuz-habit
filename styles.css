@@ -666,3 +666,71 @@
 .hormuz-plugin-about small { width: 100%; color: var(--text-faint); font-size: .7rem; }
 .hormuz-habit-settings[dir="ltr"] .setting-item-control { justify-content: flex-end; }
 .hormuz-habit-settings[dir="ltr"] .hormuz-preview-file:hover { transform: translateX(2px); }
+
+/* ============ Responsive code-block widgets ============ */
+.habit-tracker-card .habit-full-progress,
+.habit-tracker-card .habit-compact-progress {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.habit-btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+  .habit-tracker-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+  }
+
+  .habit-tracker-card .habit-left {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .habit-tracker-card .habit-stats {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .habit-tracker-card .stat-box {
+    justify-content: center;
+    min-width: 0;
+    padding: 8px 4px;
+    flex-wrap: wrap;
+  }
+
+  .habit-tracker-card .habit-full-progress,
+  .habit-tracker-card .habit-compact-progress {
+    order: 3;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .habit-tracker-card .habit-btn-wrap {
+    order: 4;
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .habit-tracker-card .habit-btn {
+    width: 100%;
+    min-height: 42px;
+  }
+}
