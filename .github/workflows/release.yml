@@ -1,0 +1,62 @@
+name: Publish HormuzHabit release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release.yml"
+      - "manifest.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    name: Publish release assets and provenance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Read version from manifest
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(node -e "process.stdout.write(require('./manifest.json').version)")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create release and upload plugin files
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: HormuzHabit v${{ steps.version.outputs.version }}
+          body: |
+            ## HormuzHabit v${{ steps.version.outputs.version }}
+
+            Obsidian habit tracker with Jalali/Gregorian calendars, streak tracking, trophy milestones, and daily-note integration.
+
+            ### Installation
+            Download `main.js`, `manifest.json`, and `styles.css` and place them in `.obsidian/plugins/hormuz-habit/`.
+
+            ### نصب
+            فایل‌های `main.js`، `manifest.json` و `styles.css` را دریافت و در مسیر `.obsidian/plugins/hormuz-habit/` قرار دهید.
+          files: |
+            main.js
+            manifest.json
+            styles.css
+          fail_on_unmatched_files: true
+          overwrite_files: true
+          make_latest: true
+
+      - name: Generate artifact attestations
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
