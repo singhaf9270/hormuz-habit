@@ -31,6 +31,10 @@ Track reading, exercise, writing, learning, or any activity you want to make par
 - 🗂️ **Path autocomplete:** Find existing folders and Markdown templates while configuring paths.
 - 🎨 **Light and dark themes:** Styling adapts to Obsidian's theme.
 
+## Usage
+
+After installation, configure your habits, add a tracker code block to a note, and use its **Log** button to record daily completion. The dashboard shows streaks, trophy milestones, and monthly progress.
+
 ## Quick Start
 
 1. Install HormuzHabit with [BRAT](https://github.com/TfTHacker/obsidian42-brat) using `singhaf9270/hormuz-habit`, or follow the manual installation steps below.
@@ -346,7 +350,7 @@ HormuzHabit is released under the MIT License. See the `LICENSE` file for detail
 
 > انتشار در GitHub به‌تنهایی به معنی اضافه‌شدن پلاگین به فهرست رسمی Community Plugins ابسیدین نیست.
 
-## شروع کار
+## نحوه استفاده
 
 ### ۱. تعریف عادت‌ها
 
