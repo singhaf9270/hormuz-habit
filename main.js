@@ -480,9 +480,6 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     const progressHolder = card.createDiv({ cls: "habit-full-progress" });
     renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
 
-    const progressHolder = card.createDiv({ cls: "habit-compact-progress" });
-    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
-
     const btnWrap = card.createDiv({ cls: "habit-btn-wrap" });
     const isDone = this.plugin.isTodayDone(habit);
     const btn = btnWrap.createEl("button", {
@@ -512,6 +509,9 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     mk(stats.activeStreakToday, habit.streakEmoji);
     mk(stats.longestStreak, habit.trophyEmoji);
     mk(stats.totalAccumulatedCups, habit.cupEmoji);
+
+    const progressHolder = card.createDiv({ cls: "habit-compact-progress" });
+    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
 
     const btnWrap = card.createDiv({ cls: "habit-btn-wrap" });
     const isDone = this.plugin.isTodayDone(habit);
