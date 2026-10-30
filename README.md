@@ -4,7 +4,7 @@
 
 **ردیاب عادت برای ابسیدین با الهام از زنجیرهٔ روزانهٔ دولینگو**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-gold.svg)](https://github.com/singhaf9270/hormuz-habit/releases)
+[![Version](https://img.shields.io/badge/version-1.0.1-gold.svg)](https://github.com/singhaf9270/hormuz-habit/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
