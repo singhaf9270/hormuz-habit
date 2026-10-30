@@ -622,10 +622,13 @@
 .hormuz-habit-settings[dir="ltr"] .hormuz-preview-file:hover { transform: translateX(2px); }
 
 /* ============ Responsive code-block widgets ============ */
+/* Desktop/tablet: keep the original horizontal card layout.
+   Let the progress area share the row instead of forcing a full-width row. */
 .habit-tracker-card .habit-full-progress,
 .habit-tracker-card .habit-compact-progress {
-  flex: 1 1 100%;
-  min-width: 0;
+  flex: 1 1 240px;
+  width: auto;
+  min-width: 180px;
 }
 
 .habit-btn-wrap {
@@ -633,6 +636,7 @@
   align-items: center;
   justify-content: flex-end;
 }
+
 
 @media (max-width: 600px) {
   .habit-tracker-card {
