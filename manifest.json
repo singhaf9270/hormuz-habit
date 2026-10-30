@@ -1,7 +1,7 @@
 {
   "id": "hormuz-habit",
   "name": "HormuzHabit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "minAppVersion": "1.5.0",
   "description": "Bilingual habit tracker with Jalali/Gregorian calendars, streak progress, and daily-note previews.",
   "author": "HormuzHabit",
