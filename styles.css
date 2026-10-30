@@ -622,73 +622,126 @@
 .hormuz-habit-settings[dir="ltr"] .hormuz-preview-file:hover { transform: translateX(2px); }
 
 /* ============ Responsive code-block widgets ============ */
-/* Desktop/tablet: keep the original horizontal card layout.
-   Let the progress area share the row instead of forcing a full-width row. */
+/* Desktop: stats and action stay on the first row; progress spans the row below. */
 .habit-tracker-card .habit-full-progress,
 .habit-tracker-card .habit-compact-progress {
-  flex: 1 1 240px;
-  width: auto;
-  min-width: 180px;
+  order: 2;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-.habit-btn-wrap {
+.habit-tracker-card .habit-btn-wrap {
+  order: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  flex: 0 0 auto;
 }
-
 
 @media (max-width: 600px) {
   .habit-tracker-card {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
     width: 100%;
     box-sizing: border-box;
-    padding: 14px;
+    padding: 12px;
   }
 
   .habit-tracker-card .habit-left {
-    order: 1;
-    width: 100%;
+    grid-column: 1 / -1;
+    grid-row: 1;
     min-width: 0;
+    width: 100%;
   }
 
   .habit-tracker-card .habit-stats {
-    order: 2;
+    grid-column: 1;
+    grid-row: 2;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 5px;
     width: 100%;
     min-width: 0;
-    gap: 6px;
+    flex: initial;
   }
 
   .habit-tracker-card .stat-box {
+    display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 3px;
     min-width: 0;
-    padding: 8px 4px;
+    padding: 7px 3px;
+    box-sizing: border-box;
     flex-wrap: wrap;
+    font-size: 0.72rem;
+    text-align: center;
   }
 
-  .habit-tracker-card .habit-full-progress,
-  .habit-tracker-card .habit-compact-progress {
-    order: 3;
-    width: 100%;
-    min-width: 0;
-    margin: 0;
-    padding: 0;
+  .habit-tracker-card .stat-box .num {
+    font-size: 0.88rem;
   }
 
   .habit-tracker-card .habit-btn-wrap {
-    order: 4;
-    width: 100%;
+    grid-column: 2;
+    grid-row: 2;
+    order: initial;
+    width: auto;
+    min-width: 68px;
     justify-content: stretch;
   }
 
   .habit-tracker-card .habit-btn {
     width: 100%;
-    min-height: 42px;
+    min-width: 68px;
+    min-height: 40px;
+    padding: 7px 10px;
+    white-space: nowrap;
+  }
+
+  .habit-tracker-card .habit-full-progress,
+  .habit-tracker-card .habit-compact-progress {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    order: initial;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0 2px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 360px) {
+  .habit-tracker-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .habit-tracker-card .habit-left,
+  .habit-tracker-card .habit-stats,
+  .habit-tracker-card .habit-btn-wrap,
+  .habit-tracker-card .habit-full-progress,
+  .habit-tracker-card .habit-compact-progress {
+    grid-column: 1;
+  }
+
+  .habit-tracker-card .habit-btn-wrap {
+    grid-row: 3;
+    width: 100%;
+  }
+
+  .habit-tracker-card .habit-btn {
+    width: 100%;
+  }
+
+  .habit-tracker-card .habit-full-progress,
+  .habit-tracker-card .habit-compact-progress {
+    grid-row: 4;
   }
 }
