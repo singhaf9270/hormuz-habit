@@ -477,9 +477,6 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     mk(stats.longestStreak, ph.text("رکورد", "Best"), habit.trophyEmoji);
     mk(stats.totalAccumulatedCups, ph.text("کاپ", "Trophies"), habit.cupEmoji);
 
-    const progressHolder = card.createDiv({ cls: "habit-full-progress" });
-    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
-
     const btnWrap = card.createDiv({ cls: "habit-btn-wrap" });
     const isDone = this.plugin.isTodayDone(habit);
     const btn = btnWrap.createEl("button", {
@@ -487,6 +484,9 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
       text: isDone ? ph.text("✓ ثبت شده", "✓ Logged") : ph.text("ثبت", "Log"),
     });
     if (!isDone) this._bindLogButton(btn, habit, ".habit-tracker-card");
+
+    const progressHolder = this.containerEl.createDiv({ cls: "habit-full-progress" });
+    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
   }
 
   renderCompact(habit) {
@@ -510,9 +510,6 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     mk(stats.longestStreak, habit.trophyEmoji);
     mk(stats.totalAccumulatedCups, habit.cupEmoji);
 
-    const progressHolder = card.createDiv({ cls: "habit-compact-progress" });
-    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
-
     const btnWrap = card.createDiv({ cls: "habit-btn-wrap" });
     const isDone = this.plugin.isTodayDone(habit);
     const btn = btnWrap.createEl("button", {
@@ -521,6 +518,9 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     });
     btn.style.padding = "5px 14px";
     if (!isDone) this._bindLogButton(btn, habit, ".habit-tracker-card");
+
+    const progressHolder = this.containerEl.createDiv({ cls: "habit-compact-progress" });
+    renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
   }
 }
 
@@ -742,14 +742,12 @@ class HabitTrackerPlugin extends Plugin {
     // ---------------------------------------------------------
 
     this.registerMarkdownCodeBlockProcessor("habit-tracker", (source, el, ctx) => {
-      el.closest("pre")?.classList.add("habit-widget-code-block");
       const child = new HabitTrackerRenderChild(this.app, this, el, source);
       ctx.addChild(child);
       child.render();
     });
 
     this.registerMarkdownCodeBlockProcessor("habit", (source, el, ctx) => {
-      el.closest("pre")?.classList.add("habit-widget-code-block");
       const name = (source || "").trim();
       const child = new HabitTrackerRenderChild(this.app, this, el, name);
       ctx.addChild(child);
@@ -757,7 +755,6 @@ class HabitTrackerPlugin extends Plugin {
     });
 
     this.registerMarkdownCodeBlockProcessor("habit-compact", (source, el, ctx) => {
-      el.closest("pre")?.classList.add("habit-widget-code-block");
       const name = (source || "").trim();
       const child = new HabitTrackerRenderChild(this.app, this, el, "compact\n" + name);
       ctx.addChild(child);
