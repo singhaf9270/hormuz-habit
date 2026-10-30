@@ -667,3 +667,49 @@
 .hormuz-plugin-about small { width: 100%; color: var(--text-faint); font-size: .7rem; }
 .hormuz-habit-settings[dir="ltr"] .setting-item-control { justify-content: flex-end; }
 .hormuz-habit-settings[dir="ltr"] .hormuz-preview-file:hover { transform: translateX(2px); }
+
+/* ============ Mobile layout: full-width stats + log button ============ */
+@media screen and (max-width: 600px) {
+  .habit-tracker-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .habit-tracker-card .habit-left {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .habit-tracker-card .habit-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    flex: 0 0 100%;
+    gap: 6px;
+  }
+
+  .habit-tracker-card .stat-box {
+    justify-content: center;
+    min-width: 0;
+    padding: 8px 4px;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .habit-tracker-card .habit-btn-wrap {
+    display: block;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .habit-tracker-card .habit-btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+  }
+}
+
