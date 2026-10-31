@@ -728,7 +728,8 @@ class HabitDashboardView extends ItemView {
 
 
 class HabitQuantityModal extends Modal {
-  constructor(app, plugin, habit, currentValue, onSubmit) { super(app); this.plugin=plugin; this.habit=habit; this.currentValue=currentValue; this.onSubmit=onSubmit; }
+  constructor(app, plugin, habit, currentValue, onSubmit) { super(app); this.plugin=plugin; this.habit=habit; this.currentValue=currentValue; this.onSubmit=onSubmit; this.resolved=false; }
+  finish(value) { if (!this.resolved) { this.resolved=true; this.onSubmit(value); } }
   onOpen() {
     const ph=this.plugin.persianHelper, {contentEl}=this; contentEl.empty(); contentEl.addClass("hormuz-quantity-modal");
     contentEl.setAttribute("dir",this.plugin.settings.language==="en"?"ltr":"rtl");
@@ -743,12 +744,12 @@ class HabitQuantityModal extends Modal {
     if(goal>0)contentEl.createDiv({cls:"hormuz-modal-hint",text:ph.text("هدف روزانه: ","Daily goal: ")+ph.fa(goal)+" "+(this.habit.quantityUnit||"")});
     const actions=contentEl.createDiv({cls:"hormuz-modal-actions"});
     const cancel=actions.createEl("button",{text:ph.text("انصراف","Cancel")});
-    cancel.addEventListener("click",()=>{this.close();this.onSubmit(null);});
+    cancel.addEventListener("click",()=>{this.finish(null);this.close();});
     const save=actions.createEl("button",{cls:"mod-cta",text:ph.text("ثبت مقدار","Save amount")});
-    save.addEventListener("click",()=>{const value=Number(input.value);if(input.value.trim()===""||!Number.isFinite(value)||value<0){new Notice(ph.text("یک مقدار معتبر وارد کن.","Enter a valid non-negative amount."));input.focus();return;}this.close();this.onSubmit(value);});
+    save.addEventListener("click",()=>{const value=Number(input.value);if(input.value.trim()===""||!Number.isFinite(value)||value<0){new Notice(ph.text("یک مقدار معتبر وارد کن.","Enter a valid non-negative amount."));input.focus();return;}this.finish(value);this.close();});
     input.addEventListener("keydown",e=>{if(e.key==="Enter")save.click();}); window.setTimeout(()=>input.focus(),50);
   }
-  onClose(){this.contentEl.empty();}
+  onClose(){this.finish(null);this.contentEl.empty();}
 }
 
 class HabitAnalyticsModal extends Modal {
