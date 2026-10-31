@@ -20,6 +20,9 @@ Track reading, exercise, writing, learning, or any activity you want to make par
 ### Features
 
 - 🔥 **Streak tracking:** Follow your current streak and longest personal record.
+- 📏 **Quantity tracking:** Record minutes, pages, repetitions, distance, or any custom unit for each habit.
+- 🎯 **Daily goals:** Set an optional target and compare each day's amount with it.
+- 📈 **Progress analytics:** Review totals, averages, goal completion, best days, trends, and daily charts over 7, 30, or 90 days.
 - 🏆 **Trophy milestones:** Configure a trophy threshold for each habit.
 - 🎉 **Golden celebrations:** Enjoy confetti and a celebration message when reaching a trophy milestone.
 - 📊 **Habit dashboard:** View your habits, progress statistics, and monthly calendars.
@@ -204,6 +207,9 @@ Every habit can be configured independently.
 | Frontmatter field | The property name used to record completion in daily notes. |
 | Habit emoji | The emoji displayed beside the habit name. |
 | Trophy threshold | The number of consecutive logged days needed to reach a trophy milestone. |
+| Track a quantity | Enable optional amount tracking for this habit. |
+| Unit | Enter a unit such as minutes, pages, kilometers, or a custom label. |
+| Daily goal | Set the target amount for each day. |
 | Streak emoji | The emoji used for the current streak. |
 | Record emoji | The emoji used for the personal-best statistic. |
 | Cup emoji | The emoji used for trophy progress and rewards. |
@@ -282,11 +288,19 @@ Confirm that the template path points to an existing Markdown file. The template
 
 Make sure HormuzHabit is enabled and open its own settings page under Community plugins.
 
+## Quantity Tracking and Analytics
+
+When quantity tracking is enabled for a habit, the Log button asks for the amount completed today. The amount is saved in a dedicated Frontmatter property in the daily note; the existing completion property remains unchanged. Re-enter the Log action to update today's amount. Completion and goal achievement are separate: logging 20 minutes still marks the habit as completed even if the daily goal is 30 minutes.
+
+The analytics panel provides 7-, 30-, and 90-day views with totals, average per active day, calendar-day average, weekly average, active days, best day, goal hit rate, a trend label, and a daily chart. Habits without quantity tracking continue to work as before.
+
 ## Privacy
 
 Habit records are stored in your Obsidian vault's Markdown files. Review the plugin source code and the permissions of any other plugins you use if you want to understand how your vault data is accessed.
 
 ## Links and Support
+
+- **Support the developer:** https://reymit.ir/singhaf9270
 
 - **Repository:** https://github.com/singhaf9270/hormuz-habit
 - **Releases:** https://github.com/singhaf9270/hormuz-habit/releases
@@ -310,6 +324,9 @@ HormuzHabit is released under the MIT License. See the `LICENSE` file for detail
 ### امکانات
 
 - 🔥 پیگیری زنجیرهٔ روزهای متوالی و رکورد شخصی هر عادت
+- 📏 ثبت کمیت هر عادت با واحد دلخواه؛ مانند دقیقه، صفحه، تعداد یا کیلومتر
+- 🎯 تعیین هدف روزانه و مقایسهٔ مقدار ثبت‌شده با هدف
+- 📈 تحلیل روند، مجموع و میانگین، بهترین روز و نمودار در بازه‌های ۷، ۳۰ و ۹۰ روزه
 - 🏆 تعیین حد نصاب دریافت کاپ برای هر عادت
 - 🎉 جشن طلایی، انیمیشن و پیام تبریک هنگام رسیدن به نقطهٔ عطف
 - 📊 داشبورد اختصاصی همراه با آمار و تقویم ماهانه
@@ -360,7 +377,7 @@ HormuzHabit is released under the MIT License. See the `LICENSE` file for detail
 
 در بخش **Habits** می‌توانی عادت جدید اضافه کنی، تنظیمات هر عادت را تغییر بدهی یا آن را حذف کنی.
 
-هر عادت نام نمایشی، نام فیلد Frontmatter، ایموجی‌های اختصاصی و حد نصاب دریافت کاپ خودش را دارد.
+هر عادت نام نمایشی، نام فیلد Frontmatter، ایموجی‌های اختصاصی و حد نصاب دریافت کاپ خودش را دارد. همچنین می‌توانی ثبت کمیت، واحد دلخواه و هدف روزانه را برای آن فعال کنی.
 
 ### ۲. تنظیم یادداشت‌های روزانه
 
@@ -460,6 +477,9 @@ HormuzHabit یادداشت‌های روزانه را با نام فایل می�
 | ایموجی زنجیره | ایموجی نمایش زنجیرهٔ فعلی |
 | ایموجی رکورد | ایموجی آمار بهترین رکورد شخصی |
 | ایموجی کاپ | ایموجی کاپ و نوار پیشرفت |
+| ثبت کمیت | فعال‌کردن ثبت مقدار برای این عادت |
+| واحد | واحد دلخواه مانند دقیقه، صفحه، کیلومتر یا تعداد |
+| هدف روزانه | مقدار هدفی که می‌خواهی هر روز به آن برسی |
 
 با گزینهٔ **افزودن عادت** می‌توانی عادت جدیدی بسازی. دکمهٔ حذف نیز عادت انتخاب‌شده را از تنظیمات پلاگین پاک می‌کند.
 
@@ -541,10 +561,18 @@ reading: true
 
 ## لینک‌ها و پشتیبانی
 
+- **حمایت از توسعه‌دهنده:** https://reymit.ir/singhaf9270
+
 - **مخزن پروژه:** https://github.com/singhaf9270/hormuz-habit
 - **نسخه‌های منتشرشده:** https://github.com/singhaf9270/hormuz-habit/releases
 - **گزارش خطا و پیشنهاد:** https://github.com/singhaf9270/hormuz-habit/issues
 - **وب‌سایت ابسیدین:** https://obsidian.md
+
+## ثبت کمیت و تحلیل روند
+
+اگر ثبت کمیت را برای عادتی فعال کنی، هنگام زدن دکمهٔ ثبت می‌توانی مقدار انجام‌شده را وارد کنی. مقدار در یک فیلد جداگانه از Frontmatter یادداشت روزانه ذخیره می‌شود و فیلد قدیمیِ انجام‌شدن عادت دست‌نخورده می‌ماند. با ثبت دوباره می‌توانی مقدار همان روز را اصلاح کنی. انجام عادت از رسیدن به هدف جداست؛ مثلاً با ۲۰ دقیقه مطالعه، عادت انجام‌شده محسوب می‌شود حتی اگر هدف روزانه ۳۰ دقیقه باشد.
+
+پنجرهٔ تحلیل، مجموع و میانگین، بهترین روز، درصد تحقق هدف، روند و نمودار روزانه را در بازه‌های ۷، ۳۰ و ۹۰ روزه نمایش می‌دهد. عادت‌هایی که ثبت کمیت برایشان فعال نشده، مانند قبل کار می‌کنند.
 
 ## مجوز
 
