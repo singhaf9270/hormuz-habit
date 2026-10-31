@@ -774,61 +774,61 @@
 
 /* ============ HormuzHabit modal RTL refinement ============ */
 /* Scope these rules to the two plugin modals only. */
-.hormuz-quantity-modal,
-.hormuz-analytics-modal {
+.hormuz-quantity-modal[dir="rtl"],
+.hormuz-analytics-modal[dir="rtl"] {
   direction: rtl;
   text-align: right;
   unicode-bidi: plaintext;
 }
 
-.hormuz-quantity-modal h2,
-.hormuz-analytics-modal h2,
-.hormuz-quantity-modal p,
-.hormuz-analytics-modal h3,
-.hormuz-quantity-modal label,
-.hormuz-quantity-modal .hormuz-modal-hint,
-.hormuz-analytics-modal .hormuz-modal-hint,
-.hormuz-analytics-modal .hormuz-analytics-metric .label,
-.hormuz-analytics-modal .hormuz-analytics-metric .value {
+.hormuz-quantity-modal[dir="rtl"] h2,
+.hormuz-analytics-modal[dir="rtl"] h2,
+.hormuz-quantity-modal[dir="rtl"] p,
+.hormuz-analytics-modal[dir="rtl"] h3,
+.hormuz-quantity-modal[dir="rtl"] label,
+.hormuz-quantity-modal[dir="rtl"] .hormuz-modal-hint,
+.hormuz-analytics-modal[dir="rtl"] .hormuz-modal-hint,
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-metric .label,
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-metric .value {
   direction: rtl;
   text-align: right;
 }
 
-.hormuz-quantity-modal .hormuz-quantity-input-wrap,
-.hormuz-quantity-modal .hormuz-modal-actions,
-.hormuz-analytics-modal .hormuz-analytics-tabs,
-.hormuz-analytics-modal .hormuz-analytics-grid,
-.hormuz-analytics-modal .hormuz-analytics-chart {
+.hormuz-quantity-modal[dir="rtl"] .hormuz-quantity-input-wrap,
+.hormuz-quantity-modal[dir="rtl"] .hormuz-modal-actions,
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-tabs,
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-grid,
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-chart {
   direction: rtl;
 }
 
-.hormuz-quantity-modal input[type="number"] {
+.hormuz-quantity-modal[dir="rtl"] input[type="number"] {
   direction: ltr;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-.hormuz-analytics-modal .hormuz-analytics-metric .value {
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-metric .value {
   unicode-bidi: plaintext;
   overflow-wrap: anywhere;
 }
 
-.hormuz-analytics-modal .hormuz-analytics-bars {
+.hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-bars {
   direction: rtl;
 }
 
 @media (max-width: 600px) {
-  .modal .hormuz-analytics-modal {
+  .modal .hormuz-analytics-modal[dir="rtl"] {
     min-width: 0;
     width: 100%;
     max-width: 100%;
   }
 
-  .hormuz-analytics-modal .hormuz-analytics-grid {
+  .hormuz-analytics-modal[dir="rtl"] .hormuz-analytics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .hormuz-quantity-modal .hormuz-modal-actions {
+  .hormuz-quantity-modal[dir="rtl"] .hormuz-modal-actions {
     flex-wrap: wrap;
   }
 }
