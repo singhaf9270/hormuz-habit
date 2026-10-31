@@ -749,3 +749,11 @@
 .hormuz-quantity-toggle{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
 .hormuz-quantity-toggle input{width:18px;height:18px;accent-color:var(--interactive-accent)}
 @media(max-width:600px){.hormuz-analytics-modal{min-width:0;max-width:100%}.hormuz-analytics-grid{grid-template-columns:1fr 1fr}.hormuz-analytics-bars{gap:1px}.hormuz-analytics-bar{width:90%}}
+
+
+/* Position analytics shortcut in the habit title row */
+.hormuz-analytics-header{flex:0 0 auto;align-self:center;margin:0 2px;padding:3px 6px;min-width:27px;height:26px;border:0;background:var(--background-secondary);border-radius:7px;font-size:.82rem;line-height:1}
+.hormuz-analytics-header:hover{background:var(--background-modifier-hover);border-color:transparent}
+.habit-mini-header .hormuz-analytics-header{margin-inline-start:4px}
+.habit-left .hormuz-analytics-header{margin-inline-start:2px}
+.hormuz-analytics-header.compact{height:22px;min-width:23px;padding:2px 4px;font-size:.72rem}
