@@ -1,6 +1,6 @@
 const {
   Plugin, PluginSettingTab, Setting, Notice, TFile, TFolder,
-  MarkdownRenderChild, ItemView, moment, AbstractInputSuggest,
+  MarkdownRenderChild, ItemView, Modal, moment, AbstractInputSuggest,
 } = require("obsidian");
 
 const VIEW_TYPE_HABIT_DASHBOARD = "habit-tracker-dashboard-view";
@@ -455,6 +455,16 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     });
   }
 
+  addAnalyticsButton(parent,habit,compact=false){
+    if(!habit.quantityEnabled)return;
+    const button=parent.createEl("button",{cls:"hormuz-analytics-button hormuz-analytics-header"+(compact?" compact":""),text:"📊",attr:{title:this.plugin.persianHelper.text("تحلیل روند عادت","Habit trend analysis"),"aria-label":this.plugin.persianHelper.text("تحلیل روند عادت","Habit trend analysis")}});
+    button.addEventListener("click",()=>this.plugin.openAnalytics(habit));
+  }
+
+  renderQuantityTools(parent,habit,compact=false){
+    if(habit.quantityEnabled){const ph=this.plugin.persianHelper,amount=this.plugin.getTodayAmount(habit),goal=Number(habit.dailyGoal)||0,line=parent.createDiv({cls:"hormuz-quantity-summary"+(compact?" compact":"")});line.createSpan({text:amount===null?ph.text("بدون ثبت مقدار","No amount yet"):ph.fa(amount)+" "+(habit.quantityUnit||"")});if(goal>0)line.createSpan({cls:"goal",text:" / "+ph.fa(goal)+" "+(habit.quantityUnit||"")});}
+  }
+
   renderFull(habit) {
     const ph = this.plugin.persianHelper;
     const stats = this.plugin.computeHabitStats(habit);
@@ -465,6 +475,7 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     ns.createSpan({ cls: "habit-emoji", text: habit.habitEmoji });
     ns.appendText(" " + habit.habitName);
     left.createSpan({ cls: "habit-status-dot " + (stats.activeStreakToday > 0 ? "active" : "") });
+    this.addAnalyticsButton(left,habit,false);
 
     const statsEl = card.createDiv({ cls: "habit-stats" });
     const mk = (num, label, emoji) => {
@@ -483,7 +494,8 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
       cls: "habit-btn " + (isDone ? "done" : ""),
       text: isDone ? ph.text("✓ ثبت شده", "✓ Logged") : ph.text("ثبت", "Log"),
     });
-    if (!isDone) this._bindLogButton(btn, habit, ".habit-tracker-card");
+    if (!isDone || habit.quantityEnabled) this._bindLogButton(btn, habit, ".habit-tracker-card");
+    this.renderQuantityTools(card,habit,false);
 
     const progressHolder = this.containerEl.createDiv({ cls: "habit-full-progress" });
     renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
@@ -499,6 +511,7 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     const ns = left.createSpan({ cls: "habit-name" });
     ns.createSpan({ cls: "habit-emoji", text: habit.habitEmoji });
     ns.appendText(" " + habit.habitName);
+    this.addAnalyticsButton(left,habit,true);
 
     const statsEl = card.createDiv({ cls: "habit-stats" });
     const mk = (num, emoji) => {
@@ -517,7 +530,8 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
       text: isDone ? "✓" : ph.text("ثبت", "Log"),
     });
     btn.style.padding = "5px 14px";
-    if (!isDone) this._bindLogButton(btn, habit, ".habit-tracker-card");
+    if (!isDone || habit.quantityEnabled) this._bindLogButton(btn, habit, ".habit-tracker-card");
+    this.renderQuantityTools(card,habit,true);
 
     const progressHolder = this.containerEl.createDiv({ cls: "habit-compact-progress" });
     renderCupProgress(progressHolder, stats, habit.minStreakForTrophy || 10, habit, ph);
@@ -583,6 +597,7 @@ class HabitDashboardView extends ItemView {
     titleEl.createSpan({ cls: "emoji", text: habit.habitEmoji });
     titleEl.createSpan({ cls: "name", text: habit.habitName });
     header.createSpan({ cls: "habit-mini-status " + (isDone ? "done" : "") });
+    if(habit.quantityEnabled){const analyticsBtn=card.createEl("button",{cls:"hormuz-analytics-button hormuz-analytics-header dashboard",text:"📊",attr:{title:ph.text("تحلیل روند عادت","Habit trend analysis"),"aria-label":ph.text("تحلیل روند عادت","Habit trend analysis")}});analyticsBtn.addEventListener("click",()=>this.plugin.openAnalytics(habit));const amount=this.plugin.getTodayAmount(habit),qline=card.createDiv({cls:"hormuz-quantity-summary dashboard"});qline.setText(amount===null?ph.text("مقدار امروز ثبت نشده","No amount logged today"):ph.fa(amount)+" "+(habit.quantityUnit||"")+(Number(habit.dailyGoal)>0?" / "+ph.fa(habit.dailyGoal)+" "+(habit.quantityUnit||""):""));}
 
     const statsRow = card.createDiv({ cls: "habit-mini-stats" });
     const addStat = (val, label, emoji) => {
@@ -606,7 +621,7 @@ class HabitDashboardView extends ItemView {
       cls: "habit-mini-log-btn " + (isDone ? "done" : "") + (isGolden ? " golden" : ""),
       text: isDone ? ph.text("✓ امروز ثبت شد", "✓ Logged today") : ph.text("+ ثبت امروز", "+ Log today"),
     });
-    if (!isDone) {
+    if (!isDone || habit.quantityEnabled) {
       btn.addEventListener("click", async () => {
         const newCup = await this.plugin.logHabit(habit);
         // logHabit خودش syncAll را صدا می‌زند
@@ -715,6 +730,68 @@ class HabitDashboardView extends ItemView {
       cell.setAttribute("title", ph.formatLong(dateM) + (done ? (golden ? " 🏆" : " ✓") : " ✗"));
     }
   }
+}
+
+
+class HabitQuantityModal extends Modal {
+  constructor(app, plugin, habit, currentValue, onSubmit) { super(app); this.plugin=plugin; this.habit=habit; this.currentValue=currentValue; this.onSubmit=onSubmit; this.resolved=false; }
+  finish(value) { if (!this.resolved) { this.resolved=true; this.onSubmit(value); } }
+  onOpen() {
+    const ph=this.plugin.persianHelper, {contentEl}=this; contentEl.empty(); contentEl.addClass("hormuz-quantity-modal");
+    contentEl.setAttribute("dir",this.plugin.settings.language==="en"?"ltr":"rtl");
+    contentEl.createEl("h2",{text:ph.text("ثبت مقدار عادت","Log habit amount")});
+    contentEl.createEl("p",{cls:"hormuz-modal-desc",text:this.habit.habitName});
+    const wrap=contentEl.createDiv({cls:"hormuz-quantity-input-wrap"});
+    wrap.createEl("label",{text:ph.text("مقدار امروز","Today's amount")});
+    const input=wrap.createEl("input",{type:"number",attr:{min:"0",step:"any",inputmode:"decimal"}});
+    input.value=this.currentValue===null||this.currentValue===undefined?"":String(this.currentValue); input.placeholder="0";
+    wrap.createDiv({cls:"hormuz-quantity-unit",text:this.habit.quantityUnit||""});
+    const goal=Number(this.habit.dailyGoal);
+    if(goal>0)contentEl.createDiv({cls:"hormuz-modal-hint",text:ph.text("هدف روزانه: ","Daily goal: ")+ph.fa(goal)+" "+(this.habit.quantityUnit||"")});
+    const actions=contentEl.createDiv({cls:"hormuz-modal-actions"});
+    const cancel=actions.createEl("button",{text:ph.text("انصراف","Cancel")});
+    cancel.addEventListener("click",()=>{this.finish(null);this.close();});
+    const save=actions.createEl("button",{cls:"mod-cta",text:ph.text("ثبت مقدار","Save amount")});
+    save.addEventListener("click",()=>{const value=Number(input.value);if(input.value.trim()===""||!Number.isFinite(value)||value<0){new Notice(ph.text("یک مقدار معتبر وارد کن.","Enter a valid non-negative amount."));input.focus();return;}this.finish(value);this.close();});
+    input.addEventListener("keydown",e=>{if(e.key==="Enter")save.click();}); window.setTimeout(()=>input.focus(),50);
+  }
+  onClose(){this.finish(null);this.contentEl.empty();}
+}
+
+class HabitAnalyticsModal extends Modal {
+  constructor(app,plugin,habit){super(app);this.plugin=plugin;this.habit=habit;this.days=7;}
+  onOpen(){this.render();}
+  render(){
+    const ph=this.plugin.persianHelper,{contentEl}=this;contentEl.empty();contentEl.addClass("hormuz-analytics-modal");
+    contentEl.setAttribute("dir",this.plugin.settings.language==="en"?"ltr":"rtl");
+    contentEl.createEl("h2",{text:(this.habit.habitEmoji||"📊")+" "+ph.text("تحلیل عادت: ","Habit analysis: ")+this.habit.habitName});
+    const tabs=contentEl.createDiv({cls:"hormuz-analytics-tabs"});
+    [7,30,90].forEach(d=>{const b=tabs.createEl("button",{text:ph.fa(d)+" "+ph.text("روز","days"),cls:this.days===d?"is-active":""});b.addEventListener("click",()=>{this.days=d;this.render();});});
+    const from=moment().subtract(this.days-1,"days").startOf("day"),now=moment();
+    const pages=this.plugin.getHabitPages(this.habit),byDay=new Map();
+    pages.forEach(p=>{if(p.day.isSameOrAfter(from,"day")&&p.day.isSameOrBefore(now,"day")&&p.amount!==null)byDay.set(p.day.format("YYYY-MM-DD"),p.amount);});
+    const values=[];for(let i=0;i<this.days;i++){const day=from.clone().add(i,"days"),key=day.format("YYYY-MM-DD");values.push({day,amount:byDay.get(key)||0,recorded:byDay.has(key)});}
+    const recorded=values.filter(v=>v.recorded),total=recorded.reduce((a,v)=>a+v.amount,0),avgActive=recorded.length?total/recorded.length:0,avgCalendar=total/this.days,weekly=total/(this.days/7);
+    const best=recorded.reduce((a,v)=>!a||v.amount>a.amount?v:a,null),goal=Number(this.habit.dailyGoal)>0?Number(this.habit.dailyGoal):0;
+    const goalDays=goal?recorded.filter(v=>v.amount>=goal).length:0,pct=goal?Math.round(goalDays/this.days*100):0;
+    const half=Math.floor(values.length/2),first=values.slice(0,half).reduce((a,v)=>a+v.amount,0)/Math.max(1,half),second=values.slice(half).reduce((a,v)=>a+v.amount,0)/Math.max(1,values.length-half);
+    const trend=second>first*1.05?ph.text("روند صعودی ↗","Trending up ↗"):second<first*.95?ph.text("روند نزولی ↘","Trending down ↘"):ph.text("تقریباً ثابت →","Mostly steady →");
+    const unit=this.habit.quantityUnit||"",grid=contentEl.createDiv({cls:"hormuz-analytics-grid"});
+    const metric=(label,value)=>{const box=grid.createDiv({cls:"hormuz-analytics-metric"});box.createDiv({cls:"label",text:label});box.createDiv({cls:"value",text:value});};
+    metric(ph.text("مجموع","Total"),ph.fa(Number(total.toFixed(2)))+" "+unit);
+    metric(ph.text("میانگین روزهای ثبت‌شده","Avg. active day"),ph.fa(Number(avgActive.toFixed(2)))+" "+unit);
+    metric(ph.text("میانگین روز تقویمی","Calendar-day avg."),ph.fa(Number(avgCalendar.toFixed(2)))+" "+unit);
+    metric(ph.text("میانگین هفتگی","Weekly avg."),ph.fa(Number(weekly.toFixed(2)))+" "+unit);
+    metric(ph.text("روزهای دارای ثبت","Active days"),ph.fa(recorded.length)+" / "+ph.fa(this.days));
+    if(goal)metric(ph.text("تحقق هدف","Goal hit rate"),ph.fa(pct)+"%");
+    metric(ph.text("بهترین روز","Best day"),best?ph.fa(best.amount)+" "+unit+" · "+ph.formatLong(best.day):"—");
+    metric(ph.text("روند","Trend"),trend);
+    const chart=contentEl.createDiv({cls:"hormuz-analytics-chart"});chart.createEl("h3",{text:ph.text("روند مقدار ثبت‌شده","Recorded amount trend")});
+    const max=Math.max(1,...values.map(v=>v.amount),goal),bars=chart.createDiv({cls:"hormuz-analytics-bars"});
+    values.forEach((v,i)=>{const col=bars.createDiv({cls:"hormuz-analytics-bar-col"}),bar=col.createDiv({cls:"hormuz-analytics-bar"});bar.style.height=Math.max(v.amount>0?3:1,v.amount/max*100)+"%";bar.setAttribute("title",ph.formatLong(v.day)+": "+ph.fa(v.amount)+" "+unit);if(goal&&v.amount>=goal)bar.addClass("goal-met");if(this.days===7||i%(this.days===30?5:15)===0||i===values.length-1)col.createDiv({cls:"hormuz-analytics-axis",text:ph.fa(ph.calendarParts(v.day).jd)});});
+    if(!recorded.length)contentEl.createDiv({cls:"hormuz-modal-hint",text:ph.text("هنوز مقداری برای این بازه ثبت نشده است.","No quantities recorded in this period yet.")});
+  }
+  onClose(){this.contentEl.empty();}
 }
 
 // ============================================================
@@ -829,7 +906,7 @@ class HabitTrackerPlugin extends Plugin {
     if (!Array.isArray(this.settings.habits)) {
       this.settings.habits = JSON.parse(JSON.stringify(DEFAULT_SETTINGS.habits));
     }
-    this.settings.habits.forEach((h) => { if (!h.id) h.id = uid(); });
+    this.settings.habits.forEach((h) => { if (!h.id) h.id = uid(); if (h.quantityEnabled && !h.quantityFieldName) h.quantityFieldName = "hormuz_" + String(h.id).replace(/[^a-zA-Z0-9_-]/g, "_") + "_amount"; });
   }
 
   async saveSettings() {
@@ -879,7 +956,9 @@ class HabitTrackerPlugin extends Plugin {
       }
       if (!day) continue;
       if (day.isAfter(today, "day")) continue;
-      pages.push({ day, complete: !!fm[habit.fieldName] });
+      const amountRaw = habit.quantityFieldName ? fm[habit.quantityFieldName] : null;
+      const amount = amountRaw === null || amountRaw === undefined || amountRaw === "" ? null : Number(amountRaw);
+      pages.push({ day, complete: !!fm[habit.fieldName], amount: Number.isFinite(amount) ? amount : null });
     }
     pages.sort((a, b) => a.day.valueOf() - b.day.valueOf());
     return pages;
@@ -972,6 +1051,13 @@ class HabitTrackerPlugin extends Plugin {
     return 0;
   }
 
+  getTodayAmount(habit) {
+    if (!habit.quantityEnabled || !habit.quantityFieldName) return null;
+    const today = moment();
+    const page = this.getHabitPages(habit).find((p) => p.day.isSame(today, "day"));
+    return page && Number.isFinite(page.amount) ? page.amount : null;
+  }
+
   isDayDone(habit, date) {
     const target = date.format("YYYY-MM-DD");
     const folder = this.settings.journalPath.replace(/^"|"$/g, "");
@@ -995,7 +1081,12 @@ class HabitTrackerPlugin extends Plugin {
 
   isTodayDone(habit) { return this.isDayDone(habit, moment()); }
 
+  promptQuantity(habit,currentValue){return new Promise(resolve=>new HabitQuantityModal(this.app,this,habit,currentValue,resolve).open());}
+  openAnalytics(habit){new HabitAnalyticsModal(this.app,this,habit).open();}
+
   async logHabit(habit) {
+    let amount=null;
+    if(habit.quantityEnabled){amount=await this.promptQuantity(habit,this.getTodayAmount(habit));if(amount===null)return false;if(!habit.quantityFieldName)habit.quantityFieldName="hormuz_"+String(habit.id).replace(/[^a-zA-Z0-9_-]/g,"_")+"_amount";}
     const todayStr = moment().format("YYYY-MM-DD");
     const folder = this.settings.dailyNotePath.replace(/^"|"$/g, "");
     const prefix = folder ? folder + "/" : "";
@@ -1005,7 +1096,7 @@ class HabitTrackerPlugin extends Plugin {
     try {
       const existing = this.app.vault.getAbstractFileByPath(filePath);
       if (existing instanceof TFile) {
-        await this._setFrontmatterField(existing, habit.fieldName, true);
+        await this.app.fileManager.processFrontMatter(existing, (fm) => { fm[habit.fieldName] = true; if (habit.quantityEnabled) fm[habit.quantityFieldName] = amount; });
       } else {
         let content;
         const tpl = this.app.vault.getAbstractFileByPath(this.settings.templatePath);
@@ -1022,7 +1113,8 @@ class HabitTrackerPlugin extends Plugin {
         if (folder && !this.app.vault.getAbstractFileByPath(folder)) {
           await this.app.vault.createFolder(folder).catch(() => {});
         }
-        await this.app.vault.create(filePath, content);
+        const created = await this.app.vault.create(filePath, content);
+        if (habit.quantityEnabled) await this.app.fileManager.processFrontMatter(created, (fm) => { fm[habit.fieldName] = true; fm[habit.quantityFieldName] = amount; });
       }
       new Notice("✅ " + habit.habitName + " " + this.persianHelper.text("ثبت شد", "logged"));
     } catch (e) {
@@ -1155,7 +1247,7 @@ class HabitTrackerSettingTab extends PluginSettingTab {
     const field = (label, key, val, isNum = false) => {
       const w = grid.createDiv({ cls: "habit-settings-field" }); w.createEl("label", { text: label });
       const inp = w.createEl("input", { type: isNum ? "number" : "text" }); inp.value = val == null ? "" : String(val);
-      inp.addEventListener("change", async () => { if (isNum) { const n = parseInt(inp.value); if (!isNaN(n) && n > 0) habit[key] = n; } else habit[key] = inp.value; await this.plugin.saveSettings(); });
+      inp.addEventListener("change", async () => { if (isNum) { const n = key === "dailyGoal" ? parseFloat(inp.value) : parseInt(inp.value); if (!isNaN(n) && n > 0) habit[key] = n; } else habit[key] = inp.value; await this.plugin.saveSettings(); });
     };
     field(tx("نام نمایشی", "Display name"), "habitName", habit.habitName);
     field(tx("نام فیلد Frontmatter", "Frontmatter field"), "fieldName", habit.fieldName);
@@ -1164,6 +1256,9 @@ class HabitTrackerSettingTab extends PluginSettingTab {
     field(tx("ایموجی زنجیره", "Streak emoji"), "streakEmoji", habit.streakEmoji);
     field(tx("ایموجی رکورد", "Record emoji"), "trophyEmoji", habit.trophyEmoji);
     field(tx("ایموجی کاپ", "Cup emoji"), "cupEmoji", habit.cupEmoji);
+    const qToggle=grid.createDiv({cls:"habit-settings-field hormuz-quantity-toggle"});qToggle.createEl("label",{text:tx("ثبت کمیت برای این عادت","Track a quantity for this habit")});const qCheck=qToggle.createEl("input",{type:"checkbox"});qCheck.checked=!!habit.quantityEnabled;qCheck.addEventListener("change",async()=>{habit.quantityEnabled=qCheck.checked;if(habit.quantityEnabled&&!habit.quantityFieldName)habit.quantityFieldName="hormuz_"+String(habit.id).replace(/[^a-zA-Z0-9_-]/g,"_")+"_amount";await this.plugin.saveSettings();this.display();});
+    field(tx("واحد (مثلاً دقیقه، صفحه، لیوان)","Unit (e.g. minutes, pages, cups)"),"quantityUnit",habit.quantityUnit||"");
+    field(tx("هدف روزانه","Daily goal"),"dailyGoal",habit.dailyGoal||"",true);
   }
 }
 
