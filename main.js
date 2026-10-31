@@ -455,8 +455,14 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     });
   }
 
+  addAnalyticsButton(parent,habit,compact=false){
+    if(!habit.quantityEnabled)return;
+    const button=parent.createEl("button",{cls:"hormuz-analytics-button hormuz-analytics-header"+(compact?" compact":""),text:"📊",attr:{title:this.plugin.persianHelper.text("تحلیل روند عادت","Habit trend analysis"),"aria-label":this.plugin.persianHelper.text("تحلیل روند عادت","Habit trend analysis")}});
+    button.addEventListener("click",()=>this.plugin.openAnalytics(habit));
+  }
+
   renderQuantityTools(parent,habit,compact=false){
-    if(habit.quantityEnabled){const ph=this.plugin.persianHelper,amount=this.plugin.getTodayAmount(habit),goal=Number(habit.dailyGoal)||0,line=parent.createDiv({cls:"hormuz-quantity-summary"+(compact?" compact":"")});line.createSpan({text:amount===null?ph.text("بدون ثبت مقدار","No amount yet"):ph.fa(amount)+" "+(habit.quantityUnit||"")});if(goal>0)line.createSpan({cls:"goal",text:" / "+ph.fa(goal)+" "+(habit.quantityUnit||"")});const analytics=parent.createEl("button",{cls:"hormuz-analytics-button"+(compact?" compact":""),text:ph.text("📊 تحلیل","📊 Analysis")});analytics.addEventListener("click",()=>this.plugin.openAnalytics(habit));}
+    if(habit.quantityEnabled){const ph=this.plugin.persianHelper,amount=this.plugin.getTodayAmount(habit),goal=Number(habit.dailyGoal)||0,line=parent.createDiv({cls:"hormuz-quantity-summary"+(compact?" compact":"")});line.createSpan({text:amount===null?ph.text("بدون ثبت مقدار","No amount yet"):ph.fa(amount)+" "+(habit.quantityUnit||"")});if(goal>0)line.createSpan({cls:"goal",text:" / "+ph.fa(goal)+" "+(habit.quantityUnit||"")});}
   }
 
   renderFull(habit) {
@@ -469,6 +475,7 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     ns.createSpan({ cls: "habit-emoji", text: habit.habitEmoji });
     ns.appendText(" " + habit.habitName);
     left.createSpan({ cls: "habit-status-dot " + (stats.activeStreakToday > 0 ? "active" : "") });
+    this.addAnalyticsButton(left,habit,false);
 
     const statsEl = card.createDiv({ cls: "habit-stats" });
     const mk = (num, label, emoji) => {
@@ -504,6 +511,7 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     const ns = left.createSpan({ cls: "habit-name" });
     ns.createSpan({ cls: "habit-emoji", text: habit.habitEmoji });
     ns.appendText(" " + habit.habitName);
+    this.addAnalyticsButton(left,habit,true);
 
     const statsEl = card.createDiv({ cls: "habit-stats" });
     const mk = (num, emoji) => {
@@ -589,7 +597,7 @@ class HabitDashboardView extends ItemView {
     titleEl.createSpan({ cls: "emoji", text: habit.habitEmoji });
     titleEl.createSpan({ cls: "name", text: habit.habitName });
     header.createSpan({ cls: "habit-mini-status " + (isDone ? "done" : "") });
-    if(habit.quantityEnabled){const amount=this.plugin.getTodayAmount(habit),qline=card.createDiv({cls:"hormuz-quantity-summary dashboard"});qline.setText(amount===null?ph.text("مقدار امروز ثبت نشده","No amount logged today"):ph.fa(amount)+" "+(habit.quantityUnit||"")+(Number(habit.dailyGoal)>0?" / "+ph.fa(habit.dailyGoal)+" "+(habit.quantityUnit||""):""));}
+    if(habit.quantityEnabled){const analyticsBtn=header.createEl("button",{cls:"hormuz-analytics-button hormuz-analytics-header dashboard",text:"📊",attr:{title:ph.text("تحلیل روند عادت","Habit trend analysis"),"aria-label":ph.text("تحلیل روند عادت","Habit trend analysis")}});analyticsBtn.addEventListener("click",()=>this.plugin.openAnalytics(habit));const amount=this.plugin.getTodayAmount(habit),qline=card.createDiv({cls:"hormuz-quantity-summary dashboard"});qline.setText(amount===null?ph.text("مقدار امروز ثبت نشده","No amount logged today"):ph.fa(amount)+" "+(habit.quantityUnit||"")+(Number(habit.dailyGoal)>0?" / "+ph.fa(habit.dailyGoal)+" "+(habit.quantityUnit||""):""));}
 
     const statsRow = card.createDiv({ cls: "habit-mini-stats" });
     const addStat = (val, label, emoji) => {
@@ -607,8 +615,6 @@ class HabitDashboardView extends ItemView {
     renderCupProgress(progressHolder, stats, threshold, habit, ph);
 
     this.renderCalendar(card, habit, isGolden);
-
-    if(habit.quantityEnabled){const analyticsBtn=card.createEl("button",{cls:"hormuz-analytics-button dashboard",text:ph.text("📊 تحلیل روند","📊 View analysis")});analyticsBtn.addEventListener("click",()=>this.plugin.openAnalytics(habit));}
 
     const logWrap = card.createDiv({ cls: "habit-mini-log-wrap" });
     const btn = logWrap.createEl("button", {
