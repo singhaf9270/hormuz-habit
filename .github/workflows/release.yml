@@ -38,13 +38,13 @@ jobs:
           body: |
             ## HormuzHabit v${{ steps.version.outputs.version }}
 
-            Obsidian habit tracker with Jalali/Gregorian calendars, streak tracking, trophy milestones, and daily-note integration.
+            Obsidian habit tracker with Jalali/Gregorian calendars, streaks, optional quantity goals, analytics, and daily-note integration.
 
             ### Installation
             Download `main.js`, `manifest.json`, and `styles.css` and place them in `.obsidian/plugins/hormuz-habit/`.
 
             ### نصب
-            فایل‌های `main.js`، `manifest.json` و `styles.css` را دریافت و در مسیر `.obsidian/plugins/hormuz-habit/` قرار دهید.
+            ثبت کمیت و هدف روزانه، تحلیل روند و نمودارهای ۷، ۳۰ و ۹۰ روزه به این نسخه اضافه شده است. فایل‌های `main.js`، `manifest.json` و `styles.css` را در مسیر `.obsidian/plugins/hormuz-habit/` قرار دهید.
           files: |
             main.js
             manifest.json
