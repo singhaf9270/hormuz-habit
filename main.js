@@ -597,7 +597,7 @@ class HabitDashboardView extends ItemView {
     titleEl.createSpan({ cls: "emoji", text: habit.habitEmoji });
     titleEl.createSpan({ cls: "name", text: habit.habitName });
     header.createSpan({ cls: "habit-mini-status " + (isDone ? "done" : "") });
-    if(habit.quantityEnabled){const analyticsBtn=header.createEl("button",{cls:"hormuz-analytics-button hormuz-analytics-header dashboard",text:"📊",attr:{title:ph.text("تحلیل روند عادت","Habit trend analysis"),"aria-label":ph.text("تحلیل روند عادت","Habit trend analysis")}});analyticsBtn.addEventListener("click",()=>this.plugin.openAnalytics(habit));const amount=this.plugin.getTodayAmount(habit),qline=card.createDiv({cls:"hormuz-quantity-summary dashboard"});qline.setText(amount===null?ph.text("مقدار امروز ثبت نشده","No amount logged today"):ph.fa(amount)+" "+(habit.quantityUnit||"")+(Number(habit.dailyGoal)>0?" / "+ph.fa(habit.dailyGoal)+" "+(habit.quantityUnit||""):""));}
+    if(habit.quantityEnabled){const analyticsBtn=card.createEl("button",{cls:"hormuz-analytics-button hormuz-analytics-header dashboard",text:"📊",attr:{title:ph.text("تحلیل روند عادت","Habit trend analysis"),"aria-label":ph.text("تحلیل روند عادت","Habit trend analysis")}});analyticsBtn.addEventListener("click",()=>this.plugin.openAnalytics(habit));const amount=this.plugin.getTodayAmount(habit),qline=card.createDiv({cls:"hormuz-quantity-summary dashboard"});qline.setText(amount===null?ph.text("مقدار امروز ثبت نشده","No amount logged today"):ph.fa(amount)+" "+(habit.quantityUnit||"")+(Number(habit.dailyGoal)>0?" / "+ph.fa(habit.dailyGoal)+" "+(habit.quantityUnit||""):""));}
 
     const statsRow = card.createDiv({ cls: "habit-mini-stats" });
     const addStat = (val, label, emoji) => {
