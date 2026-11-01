@@ -1,7 +1,7 @@
 {
   "id": "hormuz-habit",
   "name": "HormuzHabit",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "minAppVersion": "1.5.0",
   "description": "Track daily habits, streaks, quantity goals, and progress with Jalali and Gregorian calendars.",
   "author": "Saeed Ghobadi",
