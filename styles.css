@@ -833,3 +833,33 @@
   }
 }
 
+
+
+/* Desktop analytics modal sizing: keep the report inside the viewport. */
+@media screen and (min-width: 601px) {
+  .modal.hormuz-analytics-window {
+    width: min(760px, calc(100vw - 48px));
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 48px);
+    box-sizing: border-box;
+  }
+
+  .modal.hormuz-analytics-window .modal-content {
+    width: 100%;
+    max-height: calc(100vh - 96px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .modal.hormuz-analytics-window .hormuz-analytics-modal {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  .modal.hormuz-analytics-window .hormuz-analytics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
