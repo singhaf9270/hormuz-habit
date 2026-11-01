@@ -759,7 +759,7 @@ class HabitQuantityModal extends Modal {
 }
 
 class HabitAnalyticsModal extends Modal {
-  constructor(app,plugin,habit){super(app);this.plugin=plugin;this.habit=habit;this.days=7;}
+  constructor(app,plugin,habit){super(app);this.modalEl.addClass("hormuz-analytics-window");this.plugin=plugin;this.habit=habit;this.days=7;}
   onOpen(){this.render();}
   render(){
     const ph=this.plugin.persianHelper,{contentEl}=this;contentEl.empty();contentEl.addClass("hormuz-analytics-modal");
