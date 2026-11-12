@@ -411,6 +411,9 @@ class HabitTrackerRenderChild extends MarkdownRenderChild {
     this.app = app;
     this.plugin = plugin;
     this.source = source;
+    // Mark this plugin's own code block so styling does not need the costly :has() selector.
+    const codeBlock = this.containerEl.closest("pre");
+    if (codeBlock) codeBlock.classList.add("hormuz-habit-codeblock");
 
     // ✅ ثبت رویداد هماهنگ‌سازی ویجت
     this.registerEvent(
@@ -937,10 +940,24 @@ class HabitTrackerPlugin extends Plugin {
     const today = moment();
     const pages = [];
     const folder = s.journalPath.replace(/^"|"$/g, "");
-    const prefix = folder ? folder + "/" : "";
-    const files = this.app.vault.getMarkdownFiles();
+    const journalRoot = folder
+      ? this.app.vault.getAbstractFileByPath(folder)
+      : this.app.vault.getRoot();
+    if (!journalRoot) return pages;
+
+    const files = [];
+    const collectMarkdownFiles = (node) => {
+      if (node instanceof TFile) {
+        if (node.extension === "md") files.push(node);
+        return;
+      }
+      if (node instanceof TFolder) {
+        for (const child of node.children) collectMarkdownFiles(child);
+      }
+    };
+    collectMarkdownFiles(journalRoot);
+
     for (const f of files) {
-      if (prefix && !f.path.startsWith(prefix)) continue;
       const cache = this.app.metadataCache.getFileCache(f);
       if (!cache || !cache.frontmatter) continue;
       const fm = cache.frontmatter;
